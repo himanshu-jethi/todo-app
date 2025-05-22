@@ -27,15 +27,19 @@ function addTodo(event, todoItem){
 
     const newCheckbox = document.createElement('input');
     newCheckbox.setAttribute('type', 'checkbox');
+    newCheckbox.setAttribute('name', 'toggle-complete');
     newCheckbox.setAttribute('class', 'todo-complete');
     newCheckbox.addEventListener('click', (event) => toggleComplete(event, todoItem.complete, newElement));
     newCheckbox.checked = Boolean(todoItem?.complete);
 
     const text = document.createTextNode(input.value.trim() || String(todoItem?.todoText));
 
+    const deleteImg = document.createElement('img');
+    deleteImg.setAttribute('src', './delete.svg');
+
     const newButton = document.createElement('button');
     newButton.setAttribute('class', 'remove-todo-item');
-    newButton.appendChild(document.createTextNode('🗑️'));
+    newButton.appendChild(deleteImg);
     newButton.addEventListener('click', (event) => removeTodo(event, todoItem?.id || newElement.getAttribute('id')));
 
     newElement.appendChild(newCheckbox);
@@ -59,10 +63,9 @@ function addTodo(event, todoItem){
 function removeTodo(event, id){
     event.preventDefault();
 
-    todoList.removeChild(event.target.parentElement);
+    todoList.removeChild(event.currentTarget.parentElement);
 
     todos = todos.filter(todo => todo.id !== id);
-    localStorage.clear();
     localStorage.setItem('todos', JSON.stringify(todos));
 }
 
